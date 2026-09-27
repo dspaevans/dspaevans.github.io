@@ -1,1 +1,755 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="apple-mobile-web-app-title" content="TradePilot">
+
+<title>TradePilot</title>
+
+<style>
+
+* {
+
+  box-sizing: border-box;
+
+  -webkit-tap-highlight-color: transparent;
+
+}
+
+body {
+
+  margin: 0;
+
+  background: #0b0f14;
+
+  color: white;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+}
+
+.app {
+
+  max-width: 500px;
+
+  margin: auto;
+
+  min-height: 100vh;
+
+  padding-bottom: 30px;
+
+}
+
+.header {
+
+  padding: 24px 20px 15px;
+
+  background: #111820;
+
+  border-bottom: 1px solid #27313b;
+
+}
+
+.logo {
+
+  font-size: 25px;
+
+  font-weight: 800;
+
+}
+
+.logo span {
+
+  color: #35d07f;
+
+}
+
+.status {
+
+  margin-top: 5px;
+
+  color: #7f8b96;
+
+  font-size: 13px;
+
+}
+
+.status b {
+
+  color: #35d07f;
+
+}
+
+.balance-card {
+
+  margin: 18px;
+
+  padding: 22px;
+
+  border-radius: 18px;
+
+  background: linear-gradient(145deg,#17232c,#10171e);
+
+  border: 1px solid #293741;
+
+}
+
+.balance-title {
+
+  color: #8b98a4;
+
+  font-size: 13px;
+
+}
+
+.balance {
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  margin-top: 5px;
+
+}
+
+.profit {
+
+  color: #35d07f;
+
+  margin-top: 5px;
+
+  font-weight: 600;
+
+}
+
+.section {
+
+  padding: 0 18px;
+
+  margin-top: 24px;
+
+}
+
+.section-title {
+
+  font-size: 18px;
+
+  font-weight: 750;
+
+  margin-bottom: 12px;
+
+}
+
+.market {
+
+  background: #121a21;
+
+  border: 1px solid #26323c;
+
+  border-radius: 16px;
+
+  padding: 15px;
+
+  margin-bottom: 10px;
+
+}
+
+.market-top {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+.coin {
+
+  font-weight: 750;
+
+  font-size: 17px;
+
+}
+
+.price {
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+}
+
+.change {
+
+  color: #35d07f;
+
+  font-size: 13px;
+
+  margin-top: 4px;
+
+}
+
+.controls {
+
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 14px;
+
+}
+
+input {
+
+  flex: 1;
+
+  min-width: 0;
+
+  background: #080d12;
+
+  color: white;
+
+  border: 1px solid #303d48;
+
+  border-radius: 10px;
+
+  padding: 12px;
+
+  font-size: 16px;
+
+}
+
+button {
+
+  border: 0;
+
+  border-radius: 10px;
+
+  padding: 12px 16px;
+
+  font-weight: 750;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+}
+
+.buy {
+
+  background: #35d07f;
+
+  color: #06140d;
+
+}
+
+.sell {
+
+  background: #ef5b68;
+
+  color: white;
+
+}
+
+.position {
+
+  background: #121a21;
+
+  border: 1px solid #26323c;
+
+  border-radius: 15px;
+
+  padding: 15px;
+
+  margin-bottom: 9px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+}
+
+.empty {
+
+  color: #788590;
+
+  font-size: 14px;
+
+  padding: 10px 0;
+
+}
+
+.trade {
+
+  background: #121a21;
+
+  border-bottom: 1px solid #26323c;
+
+  padding: 13px 5px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  font-size: 14px;
+
+}
+
+.buytext {
+
+  color: #35d07f;
+
+  font-weight: 700;
+
+}
+
+.selltext {
+
+  color: #ef5b68;
+
+  font-weight: 700;
+
+}
+
+.footer {
+
+  text-align: center;
+
+  color: #65727d;
+
+  font-size: 11px;
+
+  padding: 30px 15px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+
+    <div class="logo">Trade<span>Pilot</span></div>
+
+    <div class="status">● <b>Paper Trading</b> — Virtual account</div>
+
+  </div>
+
+  <div class="balance-card">
+
+    <div class="balance-title">PORTFOLIO VALUE</div>
+
+    <div class="balance" id="balance">$1,000.00</div>
+
+    <div class="profit" id="profit">+$0.00 (0.00%)</div>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-title">Markets</div>
+
+    <div class="market">
+
+      <div class="market-top">
+
+        <div>
+
+          <div class="coin">BTC / USD</div>
+
+          <div class="change" id="btcChange">+0.00%</div>
+
+        </div>
+
+        <div class="price" id="btcPrice">$65,000.00</div>
+
+      </div>
+
+      <div class="controls">
+
+        <input id="btcAmount" type="number" placeholder="Amount $" min="1">
+
+        <button class="buy" onclick="buy('BTC')">BUY</button>
+
+        <button class="sell" onclick="sell('BTC')">SELL</button>
+
+      </div>
+
+    </div>
+
+    <div class="market">
+
+      <div class="market-top">
+
+        <div>
+
+          <div class="coin">ETH / USD</div>
+
+          <div class="change" id="ethChange">+0.00%</div>
+
+        </div>
+
+        <div class="price" id="ethPrice">$3,200.00</div>
+
+      </div>
+
+      <div class="controls">
+
+        <input id="ethAmount" type="number" placeholder="Amount $" min="1">
+
+        <button class="buy" onclick="buy('ETH')">BUY</button>
+
+        <button class="sell" onclick="sell('ETH')">SELL</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-title">Positions</div>
+
+    <div id="positions">
+
+      <div class="empty">No open positions</div>
+
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <div class="section-title">Trade History</div>
+
+    <div id="history">
+
+      <div class="empty">No trades yet</div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+
+    TradePilot prototype • Paper trading only<br>
+
+    No real money is connected.
+
+  </div>
+
+</div>
+
+<script>
+
+let cash = 1000;
+
+let prices = {
+
+  BTC: 65000,
+
+  ETH: 3200
+
+};
+
+let startingValue = 1000;
+
+let positions = {
+
+  BTC: 0,
+
+  ETH: 0
+
+};
+
+let history = [];
+
+function money(value) {
+
+  return "$" + value.toLocaleString("en-US", {
+
+    minimumFractionDigits: 2,
+
+    maximumFractionDigits: 2
+
+  });
+
+}
+
+function update() {
+
+  document.getElementById("btcPrice").innerText =
+
+    money(prices.BTC);
+
+  document.getElementById("ethPrice").innerText =
+
+    money(prices.ETH);
+
+  let portfolio =
+
+    cash +
+
+    positions.BTC * prices.BTC +
+
+    positions.ETH * prices.ETH;
+
+  let profit = portfolio - startingValue;
+
+  let percent = (profit / startingValue) * 100;
+
+  document.getElementById("balance").innerText =
+
+    money(portfolio);
+
+  document.getElementById("profit").innerText =
+
+    (profit >= 0 ? "+" : "") +
+
+    money(profit) +
+
+    " (" +
+
+    (percent >= 0 ? "+" : "") +
+
+    percent.toFixed(2) +
+
+    "%)";
+
+  renderPositions();
+
+  renderHistory();
+
+}
+
+function getAmount(symbol) {
+
+  let id = symbol === "BTC"
+
+    ? "btcAmount"
+
+    : "ethAmount";
+
+  return Number(document.getElementById(id).value);
+
+}
+
+function buy(symbol) {
+
+  let amount = getAmount(symbol);
+
+  if (!amount || amount <= 0) {
+
+    alert("Enter an amount first.");
+
+    return;
+
+  }
+
+  if (amount > cash) {
+
+    alert("Not enough virtual cash.");
+
+    return;
+
+  }
+
+  let units = amount / prices[symbol];
+
+  positions[symbol] += units;
+
+  cash -= amount;
+
+  history.unshift({
+
+    type: "BUY",
+
+    symbol: symbol,
+
+    amount: amount,
+
+    price: prices[symbol]
+
+  });
+
+  update();
+
+}
+
+function sell(symbol) {
+
+  if (positions[symbol] <= 0) {
+
+    alert("You don't currently hold this asset.");
+
+    return;
+
+  }
+
+  let amount = getAmount(symbol);
+
+  if (!amount || amount <= 0) {
+
+    alert("Enter the dollar amount you want to sell.");
+
+    return;
+
+  }
+
+  let units = amount / prices[symbol];
+
+  if (units > positions[symbol]) {
+
+    alert("You don't hold enough of this asset.");
+
+    return;
+
+  }
+
+  positions[symbol] -= units;
+
+  cash += amount;
+
+  history.unshift({
+
+    type: "SELL",
+
+    symbol: symbol,
+
+    amount: amount,
+
+    price: prices[symbol]
+
+  });
+
+  update();
+
+}
+
+function renderPositions() {
+
+  let box = document.getElementById("positions");
+
+  let html = "";
+
+  for (let symbol of ["BTC","ETH"]) {
+
+    if (positions[symbol] > 0) {
+
+      let value =
+
+        positions[symbol] * prices[symbol];
+
+      html += `
+
+        <div class="position">
+
+          <div>
+
+            <b>${symbol}</b><br>
+
+            <small>${positions[symbol].toFixed(6)} units</small>
+
+          </div>
+
+          <div>
+
+            <b>${money(value)}</b>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+  box.innerHTML =
+
+    html || '<div class="empty">No open positions</div>';
+
+}
+
+function renderHistory() {
+
+  let box = document.getElementById("history");
+
+  if (history.length === 0) {
+
+    box.innerHTML =
+
+      '<div class="empty">No trades yet</div>';
+
+    return;
+
+  }
+
+  box.innerHTML = history.slice(0,10).map(t => `
+
+    <div class="trade">
+
+      <div>
+
+        <span class="${t.type === "BUY" ? "buytext" : "selltext"}">
+
+          ${t.type}
+
+        </span>
+
+        &nbsp; ${t.symbol}
+
+      </div>
+
+      <div>${money(t.amount)}</div>
+
+    </div>
+
+  `).join("");
+
+}
+
+/* Simulated market movement for testing */
+
+setInterval(() => {
+
+  prices.BTC *= 1 + (Math.random() - 0.5) * 0.002;
+
+  prices.ETH *= 1 + (Math.random() - 0.5) * 0.003;
+
+  document.getElementById("btcChange").innerText =
+
+    ((Math.random() - 0.5) * 2).toFixed(2) + "%";
+
+  document.getElementById("ethChange").innerText =
+
+    ((Math.random() - 0.5) * 2).toFixed(2) + "%";
+
+  update();
+
+}, 3000);
+
+update();
+
+</script>
+
+</body>
+
+</html>
